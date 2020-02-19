@@ -68,7 +68,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -120,10 +120,12 @@ alias ..='cd ..'
 alias comp='gcc -Wextra -Wall -Werror'
 export PATH=$HOME/.brew/bin:$PATH
 alias rl='delete'
-alias upd='make everything &> /dev/null'
+alias upd='make everything 1> /dev/null'
 alias gcx='gcc -lmlx -framework OpenGL -framework AppKit'
 alias updvs='cp ~/settings.json /Users/arraji/Library/Application\ Support/Code/User/settings.json'
-alias memory='rm -rfv ~/Library/*42* && clear && df -h'
+alias memory='(rm -rfv ~/Library/*42* 2>-&;  rm -rf ~/.*42* 2>-&) && clear ; df -h'
 alias hdr='header'
 alias del='delete'
 alias die='pmset displaysleepnow'
+lib="-lmlx -framework OpenGL -framework Appkit"
+alias mm=make
