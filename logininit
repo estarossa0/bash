@@ -1,0 +1,82 @@
+#!/bin/zsh
+
+
+osascript -e 'tell application "System Events" to tell dock preferences to set dock size to 0.35'
+osascript -e 'tell application "System Events" to tell dock preferences to set autohide to true'
+osascript -e 'tell application "System Events" to tell dock preferences to set magnification to true'
+osascript -e 'tell application "System Events" to tell dock preferences to set screen edge to bottom'
+osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
+
+
+defaults write com.apple.dock persistent-apps -array
+defaults write com.apple.dock recent-apps -array
+defaults write com.apple.dock persistent-others -array
+
+
+
+defaults write com.apple.dock "mru-spaces" -bool "false"
+
+
+List=(
+         "/Applications/Launchpad.app" \
+         "/Applications/iTerm.app"
+         "/Applications/Visual Studio Code.app" \
+         "/Applications/Google Chrome.app" \
+         "/Applications/Slack.app" \
+         "$HOME/desktop/Discord.app" \
+         "$HOME/desktop/Notion.app" \
+         "$HOME/desktop/GitKraken.app" \
+         "/Applications/System Preferences.app" \
+         "/Applications/Postman.app" \
+         "/Applications/Spotify.app" \
+         )
+
+for App in "${List[@]}"; do
+   if [ -d "${App}" ]
+   then
+      defaults write com.apple.dock persistent-apps -array-add "
+      <dict>
+         <key>tile-data</key>
+         <dict>
+            <key>file-data</key>
+            <dict>
+               <key>_CFURLString</key>
+               <string>${App}</string>
+               <key>_CFURLStringType</key>
+               <integer>0</integer>
+            </dict>
+         </dict>
+      </dict>
+      "
+   else
+      echo ${App} " : Not found";
+   fi
+done
+
+List=( "$HOME/Downloads" \
+         "$HOME/goinfre")
+
+for App in "${List[@]}"; do
+   if [ -d "${App}" ]
+   then
+      defaults write com.apple.dock persistent-others -array-add "
+      <dict>
+         <key>tile-data</key>
+         <dict>
+            <key>file-data</key>
+            <dict>
+               <key>_CFURLString</key>
+               <string>${App}</string>
+               <key>_CFURLStringType</key>
+               <integer>0</integer>
+            </dict>
+         </dict>
+      </dict>
+      "
+   else
+      echo ${App} " : Not found";
+   fi
+done
+echo killing
+killall Dock
+echo killed
